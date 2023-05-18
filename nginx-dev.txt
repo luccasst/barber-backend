@@ -1,0 +1,13 @@
+server {
+        server_name mazhoy.devbackend.online;   //dominio que vai rodar)
+        root /var/www/mazhoy-eventos/;   // caminho dos arquivos do projeto no servidor
+
+        location / {
+         proxy_pass http://0.0.0.0:3012; //porta onde vai rodar
+         proxy_http_version 1.1;
+         proxy_set_header Upgrade $http_upgrade;
+         proxy_set_header Connection 'Upgrade';
+         proxy_set_header Host $host;
+         proxy_cache_bypass $http_upgrade;
+         }
+}
