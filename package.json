@@ -20,11 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@nestjs/common": "^9.0.0",
-=======
-    "@nestjs/common": "^9.4.1",
->>>>>>> ef2e31a794f74d2aaf4b6e2da59b55a583b07c52
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.2",
@@ -65,10 +61,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "29.3.1",
-<<<<<<< HEAD
-=======
-    "nodemon": "^2.0.22",
->>>>>>> ef2e31a794f74d2aaf4b6e2da59b55a583b07c52
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
