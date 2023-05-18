@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+<<<<<<< HEAD
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from 'nestjs-dotenv';
@@ -42,5 +43,15 @@ import { JwtModule } from '@nestjs/jwt';
     //   useClass: RolesGuard,
     // },
   ],
+=======
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { UserModule } from './user/user.module'; 
+
+@Module({
+  imports: [UserModule],
+  controllers: [AppController],
+  providers: [AppService],
+>>>>>>> ef2e31a794f74d2aaf4b6e2da59b55a583b07c52
 })
 export class AppModule {}

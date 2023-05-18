@@ -1,6 +1,10 @@
 # compiled output
 /dist
 /node_modules
+<<<<<<< HEAD
+=======
+
+>>>>>>> ef2e31a794f74d2aaf4b6e2da59b55a583b07c52
 # Logs
 logs
 *.log
@@ -9,7 +13,11 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+<<<<<<< HEAD
 .env
+=======
+
+>>>>>>> ef2e31a794f74d2aaf4b6e2da59b55a583b07c52
 # OS
 .DS_Store
 
