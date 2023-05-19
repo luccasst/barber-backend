@@ -10,9 +10,9 @@ import { UserRole } from 'src/enum/role.enum';
 
 export class CreateUserDto {
   @IsEmail({}, { message: 'O email é inválido' })
-  @Matches(/^[a-z][a-zA-Z0-9_]*@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/, {
+  /* @Matches(/^[a-z][a-zA-Z0-9_]*@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/, {
     message: ' O email deve iniciar com letra minúscula',
-  })
+  }) */
   email: string;
 
   @IsString()
