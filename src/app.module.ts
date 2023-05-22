@@ -11,6 +11,7 @@ import { UserMethodsController } from './user/user-methods.controller';
 import { UserClientModule } from './user-client/user-client.module';
 // import { RolesGuard } from './auth/guards/roles.guard';
 import { JwtModule } from '@nestjs/jwt';
+import { BarberModule } from './barber/barber.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { JwtModule } from '@nestjs/jwt';
     AuthModule,
     UserModule,
     UserClientModule,
+    BarberModule,
   ],
   controllers: [AppController, UserMethodsController],
   providers: [

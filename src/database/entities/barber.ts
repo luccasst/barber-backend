@@ -2,8 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Barber {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -19,4 +19,7 @@ export class Barber {
 
   @Column({ nullable: true })
   longitude: string;
+
+  @Column()
+  services: string;
 }
