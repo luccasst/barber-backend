@@ -13,8 +13,17 @@ import { UserClientModule } from './user-client/user-client.module';
 import { JwtModule } from '@nestjs/jwt';
 import { BarberModule } from './barber/barber.module';
 
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { MulterModule } from '@nestjs/platform-express';
+import { multerConfig } from 'multer.config';
+
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'upload', 'avatar'),
+    }),
+    MulterModule.register(multerConfig),
     JwtModule,
     ConfigModule,
     TypeOrmModule.forRoot({

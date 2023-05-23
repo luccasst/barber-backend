@@ -17,10 +17,12 @@ export class HelperFile {
   }
 
   static async removeFile(file: string) {
+    console.log(file);
+
     try {
       await unlinkAsync(file);
     } catch (error) {
-      throw new Error('Arquivo não encotnrado');
+      throw new Error('Arquivo não encontrado');
     }
     return true;
   }

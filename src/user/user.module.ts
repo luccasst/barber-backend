@@ -7,10 +7,11 @@ import { ClientUser } from 'src/database/entities/clientUser.entity';
 import { UserClientService } from 'src/user-client/user-client.service';
 import { UserClientModule } from 'src/user-client/user-client.module';
 import { Address } from 'src/database/entities/address.entity';
+import { Rating } from 'src/database/entities/rating.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, ClientUser, Address]),
+    TypeOrmModule.forFeature([User, ClientUser, Address, Rating]),
     UserClientModule,
   ],
   controllers: [UserController, ClientController],

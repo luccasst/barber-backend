@@ -3,11 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ClientUser } from './clientUser.entity';
+import { Barber } from './barber.entity';
+import { Rating } from './rating.entity';
 
 @Entity('users')
 export class User {
@@ -23,6 +25,12 @@ export class User {
   @Column({ type: 'text' })
   password: string;
 
+  @OneToMany(() => Rating, (rating) => rating.user)
+  ratings: Rating[];
+
+  @OneToMany(() => Barber, (barber) => barber.user)
+  barbers: Barber[];
+
   @Column({
     type: 'text',
     enum: UserRole,
@@ -33,10 +41,6 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
-  // @OneToOne(() => ClientUser, {
-  //   cascade: true,
-  //   eager: true,
-  // })
   @UpdateDateColumn()
   updatedAt: Date;
   typeUser: number;
