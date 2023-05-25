@@ -25,7 +25,14 @@ export class BarberController {
   @IsPublic()
   @Post('cadastro')
   async create(@Body() createBarberDto: CreateBarberDto) {
+    /*     console.log(createBarberDto);
+     */
     return await this.barberService.createBarber(createBarberDto);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.barberService.findById(id);
   }
 
   @Get()

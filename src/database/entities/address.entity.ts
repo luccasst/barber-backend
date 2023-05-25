@@ -1,5 +1,6 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ClientUser } from './clientUser.entity';
+import { Barber } from './barber.entity';
 
 @Entity('address')
 export class Address {
@@ -24,15 +25,9 @@ export class Address {
   @Column({ type: 'text' })
   country: string;
 
+  @OneToOne(() => Barber, (barber) => barber.address)
+  barberId: Barber;
+
   @OneToOne(() => ClientUser, (candidate) => candidate.address)
   candidateId: ClientUser;
-
-  //   @OneToOne(() => Collaborator, (collaborator) => collaborator.address)
-  //   collaboratorId: Collaborator;
-
-  //   @OneToOne(() => Client, (client) => client.address)
-  //   clientId: Client;
-
-  //   @OneToOne(() => Dealer, (dealer) => dealer.address)
-  //   dealerId: Dealer;
 }

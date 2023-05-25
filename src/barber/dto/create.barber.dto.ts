@@ -1,4 +1,6 @@
-import { IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { CreateAddressDto } from 'src/database/dto/create-address';
 
 export class CreateBarberDto {
   @IsString()
@@ -9,6 +11,10 @@ export class CreateBarberDto {
 
   @IsString()
   services: string;
+
+  @ValidateNested()
+  @Type(() => CreateAddressDto)
+  address: CreateAddressDto;
 
   @IsOptional()
   latitude: string;

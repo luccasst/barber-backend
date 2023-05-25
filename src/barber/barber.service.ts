@@ -4,8 +4,10 @@ import { Repository } from 'typeorm';
 import { Barber } from 'src/database/entities/barber.entity';
 import { Rating } from 'src/database/entities/rating.entity';
 import { User } from 'src/database/entities/user.entity';
-import { HelperFile } from 'src/shared/helper';
 import { CreateBarberDto } from './dto/create.barber.dto';
+import { Address } from 'src/database/entities/address.entity';
+import { GeolocationService } from './geoLocation.service';
+import { CreateAddressDto } from 'src/database/dto/create-address';
 import * as fs from 'fs';
 
 @Injectable()
@@ -15,13 +17,38 @@ export class BarberService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Barber)
     private readonly barberRepository: Repository<Barber>,
+    private readonly geoLocationService: GeolocationService,
     @InjectRepository(Rating)
     private readonly ratingRepository: Repository<Rating>,
+    @InjectRepository(Address)
+    private readonly addressRepository: Repository<Address>,
   ) {}
 
-  async createBarber(createBarberDto: CreateBarberDto) {
-    const createdBarber = await this.barberRepository.create(createBarberDto);
-    return this.barberRepository.save(createdBarber);
+  async createBarber(createBarberDto: CreateBarberDto): Promise<Barber> {
+    const { address, ...otherData } = createBarberDto;
+    const addressDto: CreateAddressDto = createBarberDto.address;
+
+    try {
+      const coordinates =
+        await this.geoLocationService.getCoordinatesFromAddress(
+          `${addressDto.street}, ${addressDto.number}, ${addressDto.city}, ${addressDto.state}, ${addressDto.country}`,
+        );
+      console.log(coordinates);
+
+      const newBarber = this.barberRepository.create({
+        ...otherData,
+        address: addressDto,
+        latitude: coordinates.latitude.toString(),
+        longitude: coordinates.longitude.toString(),
+      });
+      console.log(newBarber);
+
+      const savedBarber = await this.barberRepository.save(newBarber);
+      console.log(savedBarber);
+      return savedBarber;
+    } catch (error) {
+      throw new Error('Erro ao obter as coordenadas geográficas do endereço.');
+    }
   }
 
   async finAll() {

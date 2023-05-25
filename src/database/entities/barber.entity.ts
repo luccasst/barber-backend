@@ -4,9 +4,12 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Rating } from './rating.entity';
+import { Address } from './address.entity';
 
 @Entity()
 export class Barber {
@@ -41,4 +44,11 @@ export class Barber {
 
   @Column()
   services: string;
+
+  @OneToOne(() => Address, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinColumn()
+  address: Address;
 }
