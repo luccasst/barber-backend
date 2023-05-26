@@ -10,6 +10,7 @@ import {
 import { User } from './user.entity';
 import { Rating } from './rating.entity';
 import { Address } from './address.entity';
+import { ServicesBarber } from './services.entity';
 
 @Entity()
 export class Barber {
@@ -19,11 +20,9 @@ export class Barber {
   @Column()
   name: string;
 
-  // Relacionamento muitos-para-um com a entidade User
   @ManyToOne(() => User, (user) => user.barbers)
   user: User;
 
-  // Relacionamento um-para-muitos com a entidade Rating
   @OneToMany(() => Rating, (rating) => rating.barber)
   ratings: Rating[];
 
@@ -42,13 +41,13 @@ export class Barber {
   @Column({ nullable: true })
   longitude: string;
 
-  @Column()
-  services: string;
-
   @OneToOne(() => Address, {
     cascade: true,
     eager: true,
   })
   @JoinColumn()
   address: Address;
+
+  @OneToMany(() => ServicesBarber, (servicesBarber) => servicesBarber.barber)
+  services: ServicesBarber[];
 }

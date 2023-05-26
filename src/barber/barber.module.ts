@@ -7,9 +7,12 @@ import { Rating } from 'src/database/entities/rating.entity';
 import { User } from 'src/database/entities/user.entity';
 import { GeolocationService } from './geoLocation.service';
 import { Address } from 'src/database/entities/address.entity';
+import { ServicesBarber } from 'src/database/entities/services.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Barber, Rating, User, Address])],
+  imports: [
+    TypeOrmModule.forFeature([Barber, Rating, User, Address, ServicesBarber]),
+  ],
   providers: [BarberService, GeolocationService],
   controllers: [BarberController],
   exports: [BarberService, GeolocationService],

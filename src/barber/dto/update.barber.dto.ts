@@ -7,8 +7,8 @@ export class UpdateBarberDto {
   @IsOptional()
   avatar: string;
 
-  @IsString()
-  service: string;
+  /* @IsString()
+  service: string; */
 
   @IsOptional()
   latitude: string;

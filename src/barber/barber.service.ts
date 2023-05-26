@@ -9,6 +9,7 @@ import { Address } from 'src/database/entities/address.entity';
 import { GeolocationService } from './geoLocation.service';
 import { CreateAddressDto } from 'src/database/dto/create-address';
 import * as fs from 'fs';
+import { CreateServiceDto } from 'src/database/dto/create-services';
 
 @Injectable()
 export class BarberService {
@@ -25,8 +26,9 @@ export class BarberService {
   ) {}
 
   async createBarber(createBarberDto: CreateBarberDto): Promise<Barber> {
-    const { address, ...otherData } = createBarberDto;
+    const { address, services, ...otherData } = createBarberDto;
     const addressDto: CreateAddressDto = createBarberDto.address;
+    const serviceDto: CreateServiceDto[] = createBarberDto.services;
 
     try {
       const coordinates =
@@ -37,6 +39,7 @@ export class BarberService {
 
       const newBarber = this.barberRepository.create({
         ...otherData,
+        services: serviceDto,
         address: addressDto,
         latitude: coordinates.latitude.toString(),
         longitude: coordinates.longitude.toString(),

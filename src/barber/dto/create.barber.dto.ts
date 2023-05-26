@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
-import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { CreateAddressDto } from 'src/database/dto/create-address';
+import { CreateServiceDto } from 'src/database/dto/create-services';
 
 export class CreateBarberDto {
   @IsString()
@@ -9,8 +10,8 @@ export class CreateBarberDto {
   @IsOptional()
   avatar: string;
 
-  @IsString()
-  services: string;
+  /* @IsString()
+  services: string; */
 
   @ValidateNested()
   @Type(() => CreateAddressDto)
@@ -21,4 +22,9 @@ export class CreateBarberDto {
 
   @IsOptional()
   longitude: string;
+
+  @IsArray()
+  @ValidateNested({ each: true }) // Validação para cada objeto do array
+  @Type(() => CreateServiceDto)
+  services: CreateServiceDto[];
 }
