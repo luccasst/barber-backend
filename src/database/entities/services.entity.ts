@@ -1,9 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  ManyToMany,
+} from 'typeorm';
 import { Barber } from './barber.entity';
 
-@Entity()
+@Entity('services')
 export class ServicesBarber {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -12,6 +18,8 @@ export class ServicesBarber {
   @Column()
   price: number;
 
-  @ManyToOne(() => Barber, (barber) => barber.services)
-  barber: Barber;
+  @ManyToMany(() => Barber, (barber) => barber.services)
+  barbers: Barber[];
 }
+/* @ManyToOne(() => Barber, (barber) => barber.services)
+barber: Barber; */

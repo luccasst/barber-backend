@@ -6,11 +6,14 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Rating } from './rating.entity';
 import { Address } from './address.entity';
 import { ServicesBarber } from './services.entity';
+import { UserRole } from 'src/enum/role.enum';
 
 @Entity()
 export class Barber {
@@ -19,6 +22,12 @@ export class Barber {
 
   @Column()
   name: string;
+
+  @Column({ type: 'text', unique: true })
+  email: string;
+
+  @Column({ type: 'text' })
+  password: string;
 
   @ManyToOne(() => User, (user) => user.barbers)
   user: User;
@@ -35,6 +44,13 @@ export class Barber {
   @Column({ default: 0 })
   stars: number;
 
+  @Column({
+    type: 'text',
+    enum: UserRole,
+    default: UserRole.BarberUser,
+  })
+  role: UserRole | string;
+
   @Column({ nullable: true })
   latitude: string;
 
@@ -48,6 +64,10 @@ export class Barber {
   @JoinColumn()
   address: Address;
 
-  @OneToMany(() => ServicesBarber, (servicesBarber) => servicesBarber.barber)
+  @ManyToMany(() => ServicesBarber, (service) => service.barbers)
+  @JoinTable()
   services: ServicesBarber[];
 }
+/* @OneToMany(() => ServicesBarber, (servicesBarber) => servicesBarber.barber)
+@JoinColumn()
+services: ServicesBarber[]; */

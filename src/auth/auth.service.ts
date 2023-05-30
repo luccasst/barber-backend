@@ -13,12 +13,15 @@ import { JwtService } from '@nestjs/jwt';
 import { UserToken } from './models/userToken';
 import { UserClientService } from 'src/user-client/user-client.service';
 import { ClientUser } from 'src/database/entities/clientUser.entity';
+import { Barber } from 'src/database/entities/barber.entity';
+import { BarberService } from 'src/barber/barber.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly userClientService: UserClientService,
+    private readonly barberService: BarberService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -37,7 +40,7 @@ export class AuthService {
   async validateUser(
     email: string,
     password: string,
-  ): Promise<User | ClientUser> {
+  ): Promise<User | ClientUser | Barber> {
     const findUser = await this.userService.findOne(email);
     console.log(findUser);
 
@@ -47,6 +50,19 @@ export class AuthService {
       if (isPasswordValid) {
         return {
           ...findUser,
+          password: undefined,
+        };
+      }
+    }
+    const findBarber = await this.barberService.findOne(email);
+    if (findBarber) {
+      const IsPasswordValid = await bcrypt.compare(
+        password,
+        findBarber.password,
+      );
+      if (IsPasswordValid) {
+        return {
+          ...findBarber,
           password: undefined,
         };
       }

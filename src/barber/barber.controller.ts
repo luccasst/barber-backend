@@ -17,6 +17,8 @@ import { CreateBarberDto } from './dto/create.barber.dto';
 import { Response } from 'express';
 import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import { barberMulterOptions } from './barberStorage.config';
+import { UpdateBarberDto } from './dto/update.barber.dto';
+import { UpdateServiceDto } from 'src/database/dto/update-services';
 
 @Controller('barber')
 export class BarberController {
@@ -38,6 +40,15 @@ export class BarberController {
   @Get()
   findAll() {
     return this.barberService.finAll();
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() UpdateBarberDto: UpdateBarberDto,
+    @Body('services') services: UpdateServiceDto[],
+  ) {
+    return this.barberService.update(id, UpdateBarberDto, services);
   }
 
   @Patch(':barberId/rate/:userId')

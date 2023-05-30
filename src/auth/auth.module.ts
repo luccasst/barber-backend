@@ -10,6 +10,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 
 import * as dotenv from 'dotenv';
 import { UserClientModule } from 'src/user-client/user-client.module';
+import { BarberModule } from '../barber/barber.module';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ dotenv.config();
   imports: [
     UserClientModule,
     UserModule,
+    BarberModule,
     JwtModule.register({
       privateKey: 'super_secret',
       secret: process.env.JWT_SECRET,
