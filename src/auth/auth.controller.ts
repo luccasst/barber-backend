@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -40,6 +42,26 @@ export class AuthController {
       serviceData,
     );
     return createdService;
+  }
+
+ /*  @Get('services')
+  async getServices(@CurrentUser() user: Barber) {
+    const services = await this.barberService.getServicesByBarber(user.id);
+    return services;
+  } */
+
+  @Patch('services/:serviceId')
+  async updateService(
+    @CurrentUser() user: Barber,
+    @Param('serviceId') serviceId: string,
+    @Body() updateData: Partial<ServicesBarber>,
+  ) {
+    const updatedService = await this.barberService.updateService(
+      user.id,
+      serviceId,
+      updateData,
+    );
+    return updatedService;
   }
 
   @Delete('services/:serviceId')

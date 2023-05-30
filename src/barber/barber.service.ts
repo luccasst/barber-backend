@@ -83,6 +83,34 @@ export class BarberService {
     await this.serviceRepository.delete(serviceId);
   }
 
+  async updateService(
+    barberId: string,
+    serviceId: string,
+    updatedService: Partial<ServicesBarber>,
+  ): Promise<ServicesBarber> {
+    const barber = await this.barberRepository
+      .createQueryBuilder('barber')
+      .leftJoinAndSelect('barber.services', 'services')
+      .where('barber.id = :barberId', { barberId })
+      .getOne();
+    if (!barber) {
+      throw new NotFoundException('Barber not found');
+    }
+
+    const service = barber.services.find((service) => service.id === serviceId);
+
+    if (!service) {
+      throw new NotFoundException('Service not found');
+    }
+
+    const updatedServiceObject = { ...service, ...updatedService };
+    const mergedService = Object.assign(service, updatedServiceObject);
+
+    await this.serviceRepository.save(mergedService);
+
+    return mergedService;
+  }
+
   async createBarber(createBarberDto: CreateBarberDto): Promise<Barber> {
     const { address, ...otherData } = createBarberDto;
     const addressDto: CreateAddressDto = createBarberDto.address;
@@ -209,14 +237,12 @@ export class BarberService {
   ) {
     const barber = await this.barberRepository.findOne({ where: { id } });
     if (services) {
-      // Atualize cada serviço individualmente
       await Promise.all(
         services.map(async (updateServiceDto: UpdateServiceDto) => {
           const service = await this.serviceRepository.findOne({
             where: { id: updateServiceDto.id },
           });
           if (service) {
-            // Atualize os campos do serviço
             service.name = updateServiceDto.name;
             service.price = updateServiceDto.price;
             await this.serviceRepository.save(service);
