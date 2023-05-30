@@ -33,7 +33,55 @@ export class BarberService {
     private readonly addressRepository: Repository<Address>,
     @InjectRepository(ServicesBarber)
     private readonly serviceRepository: Repository<ServicesBarber>,
+    @InjectRepository(ServicesBarber)
+    private readonly servicesBarberRepository: Repository<ServicesBarber>,
   ) {}
+
+  async createService(
+    barberId: string,
+    serviceData: Partial<ServicesBarber>,
+  ): Promise<ServicesBarber> {
+    const barber = await this.barberRepository.findOne({
+      where: { id: barberId },
+    });
+    if (!barber) {
+      throw new Error('Barber not found');
+    }
+
+    const newService = this.servicesBarberRepository.create(serviceData);
+    newService.barbers = [barber];
+
+    return await this.servicesBarberRepository.save(newService);
+  }
+
+  async deleteService(barberId: string, serviceId: string) {
+    const barber = await this.barberRepository
+      .createQueryBuilder('barber')
+      .leftJoinAndSelect('barber.services', 'services')
+      .where('barber.id = :barberId', { barberId })
+      .getOne();
+
+    if (!barber) {
+      throw new NotFoundException('Barber not found');
+    }
+
+    const serviceIndex = barber.services.findIndex(
+      (service) => service.id === serviceId,
+    );
+
+    if (serviceIndex === -1) {
+      throw new NotFoundException('Service not found');
+    }
+
+    barber.services.splice(serviceIndex, 1);
+    barber.services = barber.services.filter(
+      (service) => service.id !== serviceId,
+    );
+
+    await this.barberRepository.save(barber);
+
+    await this.serviceRepository.delete(serviceId);
+  }
 
   async createBarber(createBarberDto: CreateBarberDto): Promise<Barber> {
     const { address, ...otherData } = createBarberDto;
