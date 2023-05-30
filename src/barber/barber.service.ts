@@ -83,6 +83,19 @@ export class BarberService {
     await this.serviceRepository.delete(serviceId);
   }
 
+  async getServicesBarber(barberId: string): Promise<ServicesBarber[]> {
+    const barber = await this.barberRepository.findOne({
+      where: { id: barberId },
+      relations: ['services'],
+    });
+
+    if (!barber) {
+      throw new NotFoundException('Barber not found');
+    }
+
+    return barber.services;
+  }
+
   async updateService(
     barberId: string,
     serviceId: string,

@@ -44,11 +44,11 @@ export class AuthController {
     return createdService;
   }
 
- /*  @Get('services')
+  @Get('services')
   async getServices(@CurrentUser() user: Barber) {
-    const services = await this.barberService.getServicesByBarber(user.id);
+    const services = await this.barberService.getServicesBarber(user.id);
     return services;
-  } */
+  }
 
   @Patch('services/:serviceId')
   async updateService(
