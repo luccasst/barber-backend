@@ -289,27 +289,27 @@ export class BarberService {
     return updatedBarber;
   }
 
-  async updateAvatar(id: string, avatar_url: string) {
+  async updateAvatar(id: string, avatar: string) {
     const userExists = await this.barberRepository.findOne({
       where: { id },
     });
     if (!userExists) {
-      fs.rmSync(`./upload/avatar${avatar_url}`, {
+      fs.rmSync(`./upload/avatar${avatar}`, {
         maxRetries: 2,
         retryDelay: 100,
       });
       throw new NotFoundException('User not found');
     } else {
-      const deleteOld = userExists.avatar_url;
+      const deleteOld = userExists.avatar;
       if (deleteOld) {
-        fs.rmSync(`./upload/avatar/${avatar_url}`, {
+        fs.rmSync(`./upload/avatar/${avatar}`, {
           maxRetries: 2,
           retryDelay: 100,
         });
       }
     }
     // atualizar o usuario com o titulo dado à sua imagem salva
-    this.barberRepository.update(id, { avatar_url });
+    this.barberRepository.update(id, { avatar });
 
     return await this.barberRepository.findOne({ where: { id } });
   }

@@ -44,6 +44,12 @@ export class AuthController {
     return createdService;
   }
 
+  @Get('services/:barberId')
+  async getService(@Param('barberId') barberId: string) {
+    const services = await this.barberService.getServicesBarber(barberId);
+    return services;
+  }
+
   @Get('services')
   async getServices(@CurrentUser() user: Barber) {
     const services = await this.barberService.getServicesBarber(user.id);

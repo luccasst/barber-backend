@@ -21,5 +21,6 @@ export class ServicesBarber {
   @ManyToMany(() => Barber, (barber) => barber.services)
   barbers: Barber[];
 }
+
 /* @ManyToOne(() => Barber, (barber) => barber.services)
 barber: Barber; */
