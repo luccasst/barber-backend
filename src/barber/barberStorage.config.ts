@@ -15,7 +15,7 @@ export const barberMulterOptions = {
     fileSize: 1024 * 1024 * 5,
   },
   fileFilter: (req: any, file: any, cb: any) => {
-    if (file.mimetype.match(/\/(jpeg|png|gif|)$/)) {
+    if (file.mimetype.match(/\/(jpeg|png|gif|jpg)$/)) {
       // permitir armazenamento
       cb(null, true);
     } else {

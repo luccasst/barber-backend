@@ -53,7 +53,7 @@ export class CreateBarberDto {
   @IsOptional()
   longitude: string;
 
-  @ValidateNested() // Validação para cada objeto do array
+  @ValidateNested()
   @Type(() => CreateServiceDto)
   services: CreateServiceDto[];
 }

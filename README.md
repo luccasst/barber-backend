@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# Mazhoy-Ingressos-BackEnd
+# Schedule-BackEnd
 
 
 ## Rondando a aplicação

@@ -13,6 +13,7 @@ import { Address } from 'src/database/entities/address.entity';
 import { GeolocationService } from './geoLocation.service';
 import { CreateAddressDto } from 'src/database/dto/create-address';
 import * as fs from 'fs';
+import { existsSync } from 'fs';
 import { CreateServiceDto } from 'src/database/dto/create-services';
 import { UpdateBarberDto } from './dto/update.barber.dto';
 import * as bcrypt from 'bcrypt';
@@ -267,11 +268,9 @@ export class BarberService {
 
     const { address: updateAddress, latitude, longitude } = updateBarberDto;
     if (updateAddress) {
-      // Atualize o endereço existente com as novas informações
       await this.addressRepository.update(barber.address.id, updateAddress);
     }
 
-    // Atualize os outros campos do barbeiro
     await this.barberRepository.update(id, {
       name: name ? name : barber.name,
       email: email ? email : barber.email,
@@ -281,7 +280,6 @@ export class BarberService {
       longitude: longitude ? longitude : barber.longitude,
     });
 
-    // Recupere o objeto atualizado do barbeiro
     const updatedBarber = await this.barberRepository.findOne({
       where: { id },
     });
@@ -293,22 +291,20 @@ export class BarberService {
     const userExists = await this.barberRepository.findOne({
       where: { id },
     });
+
     if (!userExists) {
-      fs.rmSync(`./upload/avatar${avatar}`, {
+      throw new NotFoundException('User not found');
+    }
+
+    const deleteOld = userExists.avatar;
+
+    if (deleteOld && existsSync(`./upload/avatar/${deleteOld}`)) {
+      fs.rmSync(`./upload/avatar/${deleteOld}`, {
         maxRetries: 2,
         retryDelay: 100,
       });
-      throw new NotFoundException('User not found');
-    } else {
-      const deleteOld = userExists.avatar;
-      if (deleteOld) {
-        fs.rmSync(`./upload/avatar/${avatar}`, {
-          maxRetries: 2,
-          retryDelay: 100,
-        });
-      }
     }
-    // atualizar o usuario com o titulo dado à sua imagem salva
+
     this.barberRepository.update(id, { avatar });
 
     return await this.barberRepository.findOne({ where: { id } });

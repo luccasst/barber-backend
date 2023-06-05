@@ -36,9 +36,6 @@ export class Barber {
   ratings: Rating[];
 
   @Column({ nullable: true })
-  avatar_url: string;
-
-  @Column({ nullable: true })
   avatar: string;
 
   @Column({ default: 0 })
